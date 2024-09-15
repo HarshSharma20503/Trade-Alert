@@ -1,0 +1,29 @@
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --background-color: #f4f4f4;
+  --text-color: #333;
+  --header-footer-bg: #333;
+  --card-bg: #fff;
+  --border-color: #ddd;
+  --button-hover-bg: #2980b9;
+  --font-family: "Arial", sans-serif;
+  --font-size: 16px;
+  --line-height: 1.6;
+}
+
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: var(--font-family);
+  line-height: var(--line-height);
+  color: var(--text-color);
+  background-color: var(--background-color);
+  height: 100%; /* Ensures body takes full height */
+}
