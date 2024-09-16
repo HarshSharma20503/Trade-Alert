@@ -75,8 +75,8 @@ const Header = () => {
                   </>
                 ) : (
                   <>
-                    <Nav.Link as={Link} to="/signUp">
-                      Sign Up
+                    <Nav.Link as={Link} to="/">
+                      Home
                     </Nav.Link>
                     <Nav.Link as={Link} to="/login">
                       Login
