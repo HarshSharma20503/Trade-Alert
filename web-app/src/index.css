@@ -32,5 +32,5 @@ body {
       rgba(0, 0, 0, 0.9) 100%
     ),
     linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.9));
-  height: 100%; /* Ensures body takes full height */
+  min-height: 100vh;
 }
