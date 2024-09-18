@@ -19,7 +19,10 @@ const transporter = nodemailer.createTransport({
 // Helper function to read and inject dynamic data into the HTML template
 const generateMailHtml = (id: string): string => {
   // Read the HTML file template
-  const filePath = path.join(__dirname, "confirmationEmailTemplate.html");
+  const filePath = path.join(
+    __dirname,
+    "../mailTemplates/EmailConfirmationTemplate.html"
+  );
   let emailHtml = fs.readFileSync(filePath, "utf-8");
 
   // Replace placeholder with dynamic data
