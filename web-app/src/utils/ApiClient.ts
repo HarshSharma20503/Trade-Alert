@@ -52,6 +52,8 @@ const handleApiError = (error: any) => {
     switch (error.response.status) {
       case 401:
         console.error("Unauthorized access. Please log in again.");
+        localStorage.removeItem("user");
+        window.location.href = "/login";
         break;
       case 404:
         console.error("Requested resource not found.");

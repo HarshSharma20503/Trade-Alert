@@ -9,6 +9,7 @@ import Navbar from "./components/navbar/Navbar";
 import LoginPage from "./pages/authPage/LoginPage";
 import SignUpPage from "./pages/authPage/SignUpPage";
 import DashboardPage from "./pages/dashboardPage/DashboardPage";
+import PrivateRoutes from "./utils/PrivateRoutes";
 
 // Since App is a functional component, we can use the FC type from React
 const App: React.FC = () => {
@@ -17,9 +18,9 @@ const App: React.FC = () => {
       <ToastContainer />
       <Navbar />
       <Routes>
-        {/* <Route element={<PrivateRoutes />}>
-          </Route> */}
-        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route element={<PrivateRoutes />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
+        </Route>
 
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
