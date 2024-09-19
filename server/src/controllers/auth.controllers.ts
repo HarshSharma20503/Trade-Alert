@@ -166,4 +166,12 @@ const loginUser = AsyncHandler(async (req: Request, res: Response) => {
   throw new ApiError(401, "Invalid email or password");
 });
 
-export { registerUser, confirmEmail, loginUser };
+const logoutUser = AsyncHandler(async (req: Request, res: Response) => {
+  console.log("******** logoutUser Function ********");
+  return res
+    .status(200)
+    .clearCookie("accessToken")
+    .json(new ApiResponse(200, {}, "User logged out successfully"));
+});
+
+export { registerUser, confirmEmail, loginUser, logoutUser };

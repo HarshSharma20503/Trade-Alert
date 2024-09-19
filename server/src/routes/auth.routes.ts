@@ -3,6 +3,7 @@ import {
   registerUser,
   loginUser,
   confirmEmail,
+  logoutUser,
 } from "../controllers/auth.controllers.js";
 
 const router = Router();
@@ -23,6 +24,12 @@ router
   .route("/login")
   .post((req: Request, res: Response, next: NextFunction) => {
     loginUser(req, res, next);
+  });
+
+router
+  .route("/logout")
+  .get((req: Request, res: Response, next: NextFunction) => {
+    logoutUser(req, res, next);
   });
 
 export default router;

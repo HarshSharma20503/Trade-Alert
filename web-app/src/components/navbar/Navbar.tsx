@@ -4,6 +4,9 @@ import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { useEffect, useState } from "react";
+import { apiCall } from "../../utils/ApiClient";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import "./Navbar.css";
 
@@ -17,9 +20,21 @@ const Header = () => {
     JSON.parse(localStorage.getItem("user") || "null")
   );
 
-  const handleLogout = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
     localStorage.removeItem("user");
-    window.location.href = "/login";
+    interface ResponseData {
+      success: boolean;
+    }
+    const response = await apiCall<ResponseData>({
+      url: "/api/auth/logout",
+      method: "GET",
+    });
+    if (response?.success) {
+      navigate("/login");
+      toast.success("Logged out successfully");
+    }
   };
 
   useEffect(() => {
