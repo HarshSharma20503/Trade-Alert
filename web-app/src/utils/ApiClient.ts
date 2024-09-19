@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import { toast } from "react-toastify";
 
 // Create an Axios instance
 const axiosInstance: AxiosInstance = axios.create({
@@ -44,6 +45,9 @@ interface ApiCallOptions {
 const handleApiError = (error: any) => {
   if (error.response) {
     console.error("API Error:", error.response.data);
+    if (error.response.data.message) {
+      toast.error(error.response.data.message);
+    }
     switch (error.response.status) {
       case 401:
         console.error("Unauthorized access. Please log in again.");

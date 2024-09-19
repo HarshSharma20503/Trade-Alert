@@ -21,7 +21,7 @@ const generateMailHtml = (id: string): string => {
   // Read the HTML file template
   const filePath = path.join(
     path.resolve(),
-    "./src/mailTemplates/emailConfirmation.template.html"
+    "./src/templates/emailConfirmation.template.html"
   );
   let emailHtml = fs.readFileSync(filePath, "utf-8");
 
@@ -42,7 +42,7 @@ const sendConfirmationMail = async (to: string, id: string) => {
     const mailOptions = {
       from: process.env.EMAIL_ID,
       to: [to],
-      subject: "Email Verification for MERN Chat App",
+      subject: "Email Verification for Red Alert App",
       html: emailHtml,
     };
 

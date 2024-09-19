@@ -1,5 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from "react";
-import axios from "axios";
+// import axios from "axios";
+import { apiCall } from "../../utils/ApiClient";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
@@ -29,9 +30,20 @@ const SignUp = () => {
     setLoading(true);
 
     try {
-      await axios.post("/api/auth/signUp", formData);
-      toast.success("Verify Your Email and then proceed to login");
-      navigate("/login");
+      interface ApiResponse {
+        success: boolean;
+        message?: string;
+      }
+
+      const response = await apiCall<ApiResponse>({
+        url: "/api/auth/signup",
+        method: "POST",
+        data: formData,
+      });
+      if (response?.success) {
+        toast.success("Verify Your Email and then proceed to login");
+        navigate("/login");
+      }
     } catch (err: any) {
       if (err.response?.data?.message) {
         toast.error(err.response.data.message);
@@ -86,10 +98,10 @@ const SignUp = () => {
           />
         </div>
         <div className="d-grid">
-          <button type="submit" className="btn btn-primary py2">
+          <button type="submit" className="btn btn-primary py-2">
             {loading ? (
-              <div className="w-100 text-center py-3">
-                <Spinner animation="border" variant="primary" />
+              <div className="w-100 text-center py-3 ">
+                <Spinner animation="border" variant="light" />
               </div>
             ) : (
               <>Submit</>

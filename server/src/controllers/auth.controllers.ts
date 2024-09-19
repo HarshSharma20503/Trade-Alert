@@ -1,4 +1,7 @@
 import { Request, Response, NextFunction } from "express";
+import fs from "fs";
+import path from "path";
+
 import { AsyncHandler } from "../utils/AsyncHanlder.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
@@ -105,7 +108,14 @@ const confirmEmail = AsyncHandler(
 
     await UnverifiedUser.deleteOne({ _id: unverifiedUser._id });
 
-    return res.status(200).send("Email confirmed. You can now login");
+    const confirmedEmailHtml = fs.readFileSync(
+      path.join(
+        path.resolve(),
+        "./src/templates/confirmedEmailPage.template.html"
+      )
+    );
+
+    return res.status(200).send("" + confirmedEmailHtml);
   }
 );
 
