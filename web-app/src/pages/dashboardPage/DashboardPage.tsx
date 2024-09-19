@@ -1,29 +1,12 @@
-// import AddCompanyModal from "../../Components/modals/AddCompanyModal";
-// import SelectedStocksComponent from "../../Components/lists/SelectedStockComponent";
-// import Notifications from "../../Components/notification/Notifications";
-import axios from "axios";
+import AddCompanyModal from "../../components/modals/AddCompanyModal";
+import SelectedStocksComponent from "../../components/lists/SelectedStockComponent";
+import Notifications from "../../components/notification/Notification";
+// import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { UserInfo } from "../../types";
 
 // Define the structure for Notification and Company
-interface Notification {
-  name: string;
-  priorityLevel: number;
-  url: string;
-}
-
-interface Company {
-  name: string;
-  stockSymbol: string;
-  // Add other relevant fields for the company
-}
-
-// Define the structure for the UserInfo
-interface UserInfo {
-  name: string;
-  companies: Company[];
-  notifications: Notification[];
-}
 
 const DashboardPage = () => {
   // Set the state with type UserInfo
@@ -36,15 +19,15 @@ const DashboardPage = () => {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const res = await axios.get<{ data: UserInfo }>("/api/user");
-        // Update the state with the fetched user data
-        setUserInfo(res.data.data);
+        // const res = await axios.get<{ data: UserInfo }>("/api/user");
+        // // Update the state with the fetched user data
+        // setUserInfo(res.data.data);
       } catch (err: any) {
         console.log(err);
         toast.error(err.response?.data?.message || "Something went wrong");
       }
     };
-    // fetchUserInfo();
+    fetchUserInfo();
   }, []);
 
   return (
@@ -59,8 +42,7 @@ const DashboardPage = () => {
             No Notification as of Now
           </h4>
         ) : (
-          <></>
-          // <Notifications setUserInfo={setUserInfo} userInfo={userInfo} />
+          <Notifications setUserInfo={setUserInfo} userInfo={userInfo} />
         )}
       </div>
       <h3 className="row text-white mx-3">Company List</h3>
@@ -70,15 +52,14 @@ const DashboardPage = () => {
             Add Some Companies Stock to view
           </h4>
         ) : (
-          <></>
-          // <SelectedStocksComponent
-          //   setUserInfo={setUserInfo}
-          //   userInfo={userInfo}
-          // />
+          <SelectedStocksComponent
+            setUserInfo={setUserInfo}
+            userInfo={userInfo}
+          />
         )}
       </div>
       <div className="row my-3 mx-3">
-        {/* <AddCompanyModal setUserInfo={setUserInfo} /> */}
+        <AddCompanyModal setUserInfo={setUserInfo} />
       </div>
     </div>
   );

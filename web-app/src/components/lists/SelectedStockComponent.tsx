@@ -1,7 +1,51 @@
 import React from "react";
+import { Container, Table } from "react-bootstrap";
+import UpdateStockModal from "../modals/UpdateCompanyModal";
+import DeleteCompanyModal from "../modals/DeleteCompanyModal";
+import { UserInfo } from "../modals/DeleteCompanyModal"; // Adjust the path as necessary
 
-const SelectedStockComponent: React.FC = () => {
-  return <div>SelectedStockComponent</div>;
+interface SelectedStocksComponentProps {
+  userInfo: UserInfo;
+  setUserInfo: React.Dispatch<React.SetStateAction<UserInfo>>;
+}
+
+const SelectedStocksComponent: React.FC<SelectedStocksComponentProps> = (
+  props
+) => {
+  const { userInfo, setUserInfo } = props;
+
+  return (
+    <Container>
+      <Table responsive="sm" striped bordered hover size="sm">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Company Name</th>
+            <th>Number of Stocks</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {userInfo?.companies?.map((stock, index) => (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>{stock.name}</td>
+              <td>{stock.quantity}</td>
+              <td className="d-flex">
+                <UpdateStockModal stock={stock} setUserInfo={setUserInfo} />
+                <br />
+                <DeleteCompanyModal
+                  stock={stock}
+                  userInfo={userInfo}
+                  setUserInfo={setUserInfo}
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </Container>
+  );
 };
 
-export default SelectedStockComponent;
+export default SelectedStocksComponent;

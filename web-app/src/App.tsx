@@ -1,13 +1,9 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-// import Home from "./Pages/Home/Home";
-// import Login from "./Pages/Auth/Login";
-// import SignUp from "./Pages/Auth/SignUp";
 import { ToastContainer } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
-// import PrivateRoutes from "./Util/PrivateRoutes";
-// import Navbar from "./Components/Navbar/Navbar";
-// import DashboardPage from "./pages/dashboardPage/DashboardPage";
+
 import HomePage from "./pages/homePage/HomePage";
 import Navbar from "./components/navbar/Navbar";
 import LoginPage from "./pages/authPage/LoginPage";
