@@ -8,7 +8,7 @@ import {
 const router = Router();
 
 router
-  .route("/signUp")
+  .route("/signup")
   .post((req: Request, res: Response, next: NextFunction) => {
     registerUser(req, res, next);
   });

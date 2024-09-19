@@ -12,8 +12,28 @@ const DashboardPage = () => {
   // Set the state with type UserInfo
   const [userInfo, setUserInfo] = useState<UserInfo>({
     name: "Harsh",
-    companies: [],
-    notifications: [],
+    companies: [
+      {
+        name: "Google",
+        quantity: 10,
+      },
+      {
+        name: "Apple",
+        quantity: 5,
+      },
+    ],
+    notifications: [
+      {
+        name: "Tesla",
+        priorityLevel: 1,
+        url: "https://www.tesla.com/",
+      },
+      {
+        name: "Google",
+        priorityLevel: 2,
+        url: "https://www.google.com/",
+      },
+    ],
   });
 
   useEffect(() => {

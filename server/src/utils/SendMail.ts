@@ -20,8 +20,8 @@ const transporter = nodemailer.createTransport({
 const generateMailHtml = (id: string): string => {
   // Read the HTML file template
   const filePath = path.join(
-    __dirname,
-    "../mailTemplates/EmailConfirmationTemplate.html"
+    path.resolve(),
+    "./src/mailTemplates/emailConfirmation.template.html"
   );
   let emailHtml = fs.readFileSync(filePath, "utf-8");
 
@@ -35,18 +35,17 @@ const generateMailHtml = (id: string): string => {
 // Function to send confirmation email
 const sendConfirmationMail = async (to: string, id: string) => {
   console.log("************* Inside SendConfirmationMail *************");
-
-  // Generate HTML content with dynamic data
-  const emailHtml = generateMailHtml(id);
-
-  const mailOptions = {
-    from: process.env.EMAIL_ID,
-    to: [to],
-    subject: "Email Verification for MERN Chat App",
-    html: emailHtml,
-  };
-
   try {
+    // Generate HTML content with dynamic data
+    const emailHtml = generateMailHtml(id);
+
+    const mailOptions = {
+      from: process.env.EMAIL_ID,
+      to: [to],
+      subject: "Email Verification for MERN Chat App",
+      html: emailHtml,
+    };
+
     await transporter.sendMail(mailOptions);
     console.log("Verification Email sent successfully");
     return true;
