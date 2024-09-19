@@ -1,14 +1,24 @@
-import express, { Request, Response } from "express";
+import dotenv from "dotenv";
+import connectDB from "./config/db.js";
+import { app } from "./app.js";
+// import { GetLatestNews } from "./scripts/GetNews";
 
-const app = express();
-const PORT = process.env.PORT || 8000;
+dotenv.config();
 
-app.use(express.json());
+const port: number = Number(process.env.PORT) || 8000;
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello, TypeScript with Node and Express!");
+app.get("/", (req, res) => {
+  res.send("Welcome to the backend");
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+connectDB()
+  .then(() => {
+    console.log("Database connected");
+    app.listen(port, async () => {
+      console.log(`Server listening on port ${port}`);
+      // await GetLatestNews();
+    });
+  })
+  .catch((err: Error) => {
+    console.log(err.message);
+  });
