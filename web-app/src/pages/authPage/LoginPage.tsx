@@ -1,5 +1,5 @@
 import { useState, ChangeEvent, FormEvent } from "react";
-import axios from "axios";
+import { apiCall } from "../../utils/ApiClient";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
@@ -28,10 +28,24 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const { data } = await axios.post("/api/auth/login", formData);
-      localStorage.setItem("user", JSON.stringify(data.data));
+      // const { data } = await axios.post("/api/auth/login", formData);
+      interface ApiResponse {
+        data: {
+          _id: string;
+          name: string;
+          email: string;
+          token: string;
+        };
+      }
+      const data = await apiCall<ApiResponse>({
+        url: "/api/auth/login",
+        method: "POST",
+        data: formData,
+      });
+      console.log("Data : ", data);
+      localStorage.setItem("user", JSON.stringify(data?.data));
       toast.success("Login Successful");
-      navigate("/");
+      navigate("/dashboard");
     } catch (err: any) {
       if (err.response?.data?.message) {
         toast.error(err.response.data.message);
