@@ -8,6 +8,7 @@ const axiosInstance: AxiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json", // Default content type
   },
+  withCredentials: true, // Send cookies with requests
 });
 
 // Request interceptor to include token

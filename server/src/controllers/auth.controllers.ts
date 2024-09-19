@@ -6,7 +6,7 @@ import { AsyncHandler } from "../utils/AsyncHanlder.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
-import { UnverifiedUser } from "../models/unVerifiedUser.js";
+import { UnverifiedUser } from "../models/unVerifiedUser.model.js";
 import { generateJWTToken } from "../utils/JwtUtils.js";
 import { sendConfirmationMail } from "../utils/SendMail.js";
 
@@ -148,23 +148,25 @@ const loginUser = AsyncHandler(
 
     if (user && (await user.matchPassword(password))) {
       console.log("Inside match password");
-      res.cookie("accessToken", jwtToken, {
-        httpOnly: true,
-        expires: expiryDate,
-        secure: false,
-      });
-      return res.status(200).json(
-        new ApiResponse(
-          200,
-          {
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            token: jwtToken,
-          },
-          "User logged in successfully"
-        )
-      );
+      return res
+        .status(200)
+        .cookie("accessToken", jwtToken, {
+          httpOnly: true,
+          expires: expiryDate,
+          secure: false,
+        })
+        .json(
+          new ApiResponse(
+            200,
+            {
+              _id: user._id,
+              name: user.name,
+              email: user.email,
+              token: jwtToken,
+            },
+            "User logged in successfully"
+          )
+        );
     }
     throw new ApiError(401, "Invalid email or password");
   }

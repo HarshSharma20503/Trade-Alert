@@ -2,6 +2,7 @@ import AddCompanyModal from "../../components/modals/AddCompanyModal";
 import SelectedStocksComponent from "../../components/lists/SelectedStockComponent";
 import Notifications from "../../components/notification/Notification";
 // import axios from "axios";
+import { apiCall } from "../../utils/ApiClient";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { UserInfo } from "../../types";
@@ -11,37 +12,24 @@ import { UserInfo } from "../../types";
 const DashboardPage = () => {
   // Set the state with type UserInfo
   const [userInfo, setUserInfo] = useState<UserInfo>({
-    name: "Harsh",
-    companies: [
-      {
-        name: "Google",
-        quantity: 10,
-      },
-      {
-        name: "Apple",
-        quantity: 5,
-      },
-    ],
-    notifications: [
-      {
-        name: "Tesla",
-        priorityLevel: 1,
-        url: "https://www.tesla.com/",
-      },
-      {
-        name: "Google",
-        priorityLevel: 2,
-        url: "https://www.google.com/",
-      },
-    ],
+    name: "",
+    notifications: [],
+    companies: [],
   });
 
   useEffect(() => {
     const fetchUserInfo = async () => {
+      interface UserInfoResponse {
+        data: UserInfo;
+      }
       try {
-        // const res = await axios.get<{ data: UserInfo }>("/api/user");
-        // // Update the state with the fetched user data
-        // setUserInfo(res.data.data);
+        const response = await apiCall<UserInfoResponse>({
+          url: "/api/user",
+          method: "GET",
+        });
+        if (response && response.data) {
+          setUserInfo(response.data);
+        }
       } catch (err: any) {
         console.log(err);
         toast.error(err.response?.data?.message || "Something went wrong");
