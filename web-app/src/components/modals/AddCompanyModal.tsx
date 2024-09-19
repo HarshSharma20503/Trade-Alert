@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
 import Select from "react-select";
 import Companies from "../../assets/data/companies.json";
-import axios from "axios";
 import { apiCall } from "../../utils/ApiClient";
 import { toast } from "react-toastify";
 

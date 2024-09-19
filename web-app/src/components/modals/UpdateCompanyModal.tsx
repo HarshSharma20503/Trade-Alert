@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
 import axios from "axios";
+import { apiCall } from "../../utils/ApiClient";
 import { toast } from "react-toastify";
 import { MdOutlineEdit } from "react-icons/md";
 import { stock, UserInfo } from "../../types"; // Adjust the path as necessary
@@ -39,10 +40,20 @@ const UpdateStockModal: React.FC<UpdateStockModalProps> = ({
     };
 
     try {
-      const response = await axios.post("/api/user/updateCompanyStock", data);
-      toast.success("Company Updated Successfully");
-
-      setUserInfo(response.data.data);
+      // const response = await axios.post("/api/user/updateCompanyStock", data);
+      interface ResponseData {
+        data: UserInfo;
+        success: boolean;
+      }
+      const response = await apiCall<ResponseData>({
+        url: "/api/user/updateCompanyStock",
+        method: "POST",
+        data: data,
+      });
+      if (response && response.success) {
+        toast.success("Company Updated Successfully");
+        setUserInfo(response.data);
+      }
     } catch (err) {
       console.log(err);
       if (axios.isAxiosError(err)) {
