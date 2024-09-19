@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
 import axios from "axios";
+import { apiCall } from "../../utils/ApiClient";
 import { toast } from "react-toastify";
 import { MdDelete } from "react-icons/md";
 import { stock, UserInfo } from "../../types";
@@ -27,10 +28,20 @@ const DeleteCompanyModal: React.FC<DeleteCompanyModalProps> = ({
     };
 
     try {
-      const response = await axios.post("/api/user/deleteCompanyStock", data);
-      console.log(response.data.data);
-      toast.success("Company Deleted Successfully");
-      setUserInfo(response.data.data);
+      // const response = await axios.post("/api/user/deleteCompanyStock", data);
+      interface ResponseData {
+        data: UserInfo;
+      }
+      const response = await apiCall<ResponseData>({
+        url: "/api/user/deleteCompanyStock",
+        method: "POST",
+        data: data,
+      });
+      if (response && response.data) {
+        console.log(response.data);
+        toast.success("Company Deleted Successfully");
+        setUserInfo(response.data);
+      }
     } catch (err) {
       console.log(err);
       if (axios.isAxiosError(err)) {

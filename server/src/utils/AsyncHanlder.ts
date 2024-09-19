@@ -1,7 +1,12 @@
 import { Request, Response, NextFunction } from "express";
+import { AuthenticatedRequest } from "../types.js";
 
 const AsyncHandler = (
-  fn: (req: Request, res: Response, next: NextFunction) => Promise<any>
+  fn: (
+    req: Request | AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+  ) => Promise<any>
 ) => {
   return async (
     req: Request,

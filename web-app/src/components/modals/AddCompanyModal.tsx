@@ -3,6 +3,7 @@ import { Button, Modal, Form } from "react-bootstrap";
 import Select from "react-select";
 import Companies from "../../assets/data/companies.json";
 import axios from "axios";
+import { apiCall } from "../../utils/ApiClient";
 import { toast } from "react-toastify";
 
 interface CompanyOption {
@@ -45,22 +46,23 @@ const AddCompanyModal: React.FC<AddCompanyModalProps> = ({ setUserInfo }) => {
       stockUnits: stockUnits,
     };
     console.log(data);
+    interface ResponseData {
+      success: boolean;
+      data: any;
+    }
+    const response = await apiCall<ResponseData>({
+      url: "/api/user/addCompany",
+      method: "POST",
+      data: data,
+    });
 
-    try {
-      const response = await axios.post("/api/user/addCompany", data);
+    if (response?.success) {
       toast.success("Company Added Successfully");
-
-      setUserInfo(response.data.data);
+      console.log("response", response);
+      setUserInfo(response?.data);
       setStockUnits(0);
       setSelectedCompany(null);
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        toast.error(err.response?.data?.message || "Something went wrong");
-      } else {
-        toast.error("Something went wrong");
-      }
     }
-
     handleCloseModal();
   };
 

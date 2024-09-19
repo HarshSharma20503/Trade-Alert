@@ -3,11 +3,9 @@ import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { AsyncHandler } from "../utils/AsyncHanlder.js";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { AuthenticatedRequest } from "../types.js";
 
 // Extend Express Request interface to include user property
-interface AuthenticatedRequest extends Request {
-  user?: any;
-}
 
 export const verifyJWT = AsyncHandler(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
