@@ -32,7 +32,6 @@ const SignUp = () => {
     try {
       interface ApiResponse {
         success: boolean;
-        message?: string;
       }
 
       const response = await apiCall<ApiResponse>({
@@ -40,9 +39,15 @@ const SignUp = () => {
         method: "POST",
         data: formData,
       });
+      console.log("Response:", response);
       if (response?.success) {
         toast.success("Verify Your Email and then proceed to login");
         navigate("/login");
+        setFormData({
+          name: "",
+          email: "",
+          password: "",
+        });
       }
     } catch (err: any) {
       if (err.response?.data?.message) {

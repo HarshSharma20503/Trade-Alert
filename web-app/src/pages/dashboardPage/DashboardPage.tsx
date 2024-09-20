@@ -1,13 +1,12 @@
 import AddCompanyModal from "../../components/modals/AddCompanyModal";
 import SelectedStocksComponent from "../../components/lists/SelectedStockComponent";
 import Notifications from "../../components/notification/Notification";
-// import axios from "axios";
 import { apiCall } from "../../utils/ApiClient";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { UserInfo } from "../../types";
-
-// Define the structure for Notification and Company
+// import { getToken } from "firebase/messaging";
+import { onMessageListener, getTokenFromFirebase } from "../../utils/firebase";
 
 const DashboardPage = () => {
   // Set the state with type UserInfo
@@ -16,6 +15,46 @@ const DashboardPage = () => {
     notifications: [],
     companies: [],
   });
+
+  // const [notificationState, setNotificationState] = useState({
+  //   open: false,
+  //   message: "",
+  // });
+
+  // const handleNotificationClick = () => {
+  //   setNotificationState({
+  //     ...notificationState,
+  //     open: false,
+  //   });
+  // };
+
+  // const handleNotificationClose = () => {
+  //   setNotificationState({
+  //     ...notificationState,
+  //     open: false,
+  //   });
+  // };
+
+  // const requestNotificationPermission = async () => {
+  //   try {
+  //     const permission = await Notification.requestPermission();
+  //     console.log("Permission", permission);
+  //     if (permission === "granted") {
+  //       const notificationToken = await getToken(messaging, {
+  //         vapidKey: import.meta.env.VITE_VAPID_KEY,
+  //       });
+  //       console.log("Token", notificationToken);
+  //       const response = await apiCall({
+  //         url: "/api/user/notification-token",
+  //         method: "POST",
+  //         data: { notificationToken },
+  //       });
+  //       console.log("Response", response);
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -36,6 +75,25 @@ const DashboardPage = () => {
       }
     };
     fetchUserInfo();
+    // requestNotificationPermission();
+    // getTokenFromFirebase()
+    //   .then((response) => {
+    //     console.log("Token", response);
+    //   })
+    //   .catch((err) => {
+    //     console.log("Error", err);
+    //   });
+    // onMessageListener()
+    //   .then((payload: any) => {
+    //     console.log("Payload", payload);
+    //     setNotificationState({
+    //       open: true,
+    //       message: `🗓 ${payload.data.body}`,
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     console.log(`An error occured when showing notif ${err}`);
+    //   });
   }, []);
 
   return (
