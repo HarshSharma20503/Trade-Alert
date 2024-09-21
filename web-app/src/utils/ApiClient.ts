@@ -90,7 +90,6 @@ export const apiCall = async <T>({
     };
 
     const response: AxiosResponse<T> = await axiosInstance(config);
-    console.log("response in apicalled", response);
     return response.data ?? null; // Handle null or undefined data
   } catch (error) {
     handleApiError(error); // Handle errors using the internal error handler

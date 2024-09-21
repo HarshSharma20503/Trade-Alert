@@ -4,9 +4,9 @@ import Notifications from "../../components/notification/Notification";
 import { apiCall } from "../../utils/ApiClient";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { getToken } from "firebase/messaging";
+import { messaging } from "../../utils/firebase";
 import { UserInfo } from "../../types";
-// import { getToken } from "firebase/messaging";
-import { onMessageListener, getTokenFromFirebase } from "../../utils/firebase";
 
 const DashboardPage = () => {
   // Set the state with type UserInfo
@@ -16,84 +16,47 @@ const DashboardPage = () => {
     companies: [],
   });
 
-  // const [notificationState, setNotificationState] = useState({
-  //   open: false,
-  //   message: "",
-  // });
-
-  // const handleNotificationClick = () => {
-  //   setNotificationState({
-  //     ...notificationState,
-  //     open: false,
-  //   });
-  // };
-
-  // const handleNotificationClose = () => {
-  //   setNotificationState({
-  //     ...notificationState,
-  //     open: false,
-  //   });
-  // };
-
-  // const requestNotificationPermission = async () => {
-  //   try {
-  //     const permission = await Notification.requestPermission();
-  //     console.log("Permission", permission);
-  //     if (permission === "granted") {
-  //       const notificationToken = await getToken(messaging, {
-  //         vapidKey: import.meta.env.VITE_VAPID_KEY,
-  //       });
-  //       console.log("Token", notificationToken);
-  //       const response = await apiCall({
-  //         url: "/api/user/notification-token",
-  //         method: "POST",
-  //         data: { notificationToken },
-  //       });
-  //       console.log("Response", response);
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+  const requestNotificationPermission = async () => {
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission === "granted") {
+        console.log("Notification permission granted");
+        const notificationToken = await getToken(messaging, {
+          vapidKey: import.meta.env.VITE_VAPID_KEY,
+        });
+        console.log("Token", notificationToken);
+        // const response = await apiCall({
+        //   url: "/api/user/notification-token",
+        //   method: "POST",
+        //   data: { notificationToken },
+        // });
+        // console.log("Response", response);
+      } else if (permission === "denied") {
+        toast.error(
+          "Please allow notification permission to get notified about stock updates"
+        );
+      }
+    } catch (err) {
+      console.log("Error in requesting notification permission");
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       interface UserInfoResponse {
         data: UserInfo;
       }
-      try {
-        const response = await apiCall<UserInfoResponse>({
-          url: "/api/user",
-          method: "GET",
-        });
-        if (response && response.data) {
-          setUserInfo(response.data);
-        }
-      } catch (err: any) {
-        console.log(err);
-        toast.error(err.response?.data?.message || "Something went wrong");
+      const response = await apiCall<UserInfoResponse>({
+        url: "/api/user",
+        method: "GET",
+      });
+      if (response && response.data) {
+        setUserInfo(response.data);
       }
     };
     fetchUserInfo();
-    // requestNotificationPermission();
-    // getTokenFromFirebase()
-    //   .then((response) => {
-    //     console.log("Token", response);
-    //   })
-    //   .catch((err) => {
-    //     console.log("Error", err);
-    //   });
-    // onMessageListener()
-    //   .then((payload: any) => {
-    //     console.log("Payload", payload);
-    //     setNotificationState({
-    //       open: true,
-    //       message: `🗓 ${payload.data.body}`,
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     console.log(`An error occured when showing notif ${err}`);
-    //   });
+    requestNotificationPermission();
   }, []);
 
   return (
